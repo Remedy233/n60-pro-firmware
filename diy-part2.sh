@@ -65,4 +65,16 @@ EOF
 
 chmod +x files/etc/uci-defaults/99-istoreos-init
 
+# 修复 MediaTek 驱动编译问题
+echo "修复 MediaTek 网卡驱动..."
+MTK_DRIVER="target/linux/mediatek/files-6.6/drivers/net/ethernet/mediatek/mtk_eth_soc.c"
+if [ -f "$MTK_DRIVER" ]; then
+    echo "添加缺失的宏定义..."
+    # 在 #include 后面添加缺失的宏定义
+    sed -i '/#include "mtk_ppe.h"/a\\n/* 修复缺失的宏定义 */\n#ifndef HIT_BIND_FORCE_TO_CPU\n#define HIT_BIND_FORCE_TO_CPU 0x7\n#endif\n#define MTK_FE_START_RESET     0x100\n#define MTK_FE_RESET_NAT_DONE  0x101\n#define MTK_FE_RESET_DONE      0x102\n#define MTK_WIFI_RESET_DONE    0x200\n#define MTK_WIFI_CHIP_ONLINE   0x201\n#define MTK_WIFI_CHIP_OFFLINE  0x202' "$MTK_DRIVER"
+    echo "MediaTek 驱动修复完成"
+else
+    echo "警告: MediaTek 驱动文件未找到，跳过修复"
+fi
+
 echo "DIY Part 2 执行完成"
