@@ -1,0 +1,99 @@
+磊科 N60 Pro iStoreOS 固件编译说明
+=====================================
+基于 ImmortalWrt MT798x + iStoreOS 核心组件
+
+一、准备工作
+-----------
+1. 确保系统是 Linux（推荐 Ubuntu 20.04/22.04）
+2. 至少 50GB 可用磁盘空间
+3. 稳定的网络连接
+
+二、Windows 用户
+---------------
+Windows 用户需要使用 WSL2 (Windows Subsystem for Linux):
+
+1. 打开 PowerShell（管理员）：
+   wsl --install
+
+2. 安装 Ubuntu：
+   wsl --install -d Ubuntu-22.04
+
+3. 进入 WSL：
+   wsl
+
+4. 在 WSL 中执行后续步骤
+
+三、安装依赖（在 Linux/WSL 中）
+-----------------------------
+sudo apt update
+sudo apt install -y build-essential clang flex bison g++ gawk \
+gcc-multilib g++-multilib gettext git libncurses5-dev libssl-dev \
+python3-distutils rsync unzip zlib1g-dev file wget
+
+四、开始编译
+-----------
+1. 进入项目目录：
+   cd "/mnt/c/Users/wangr/Desktop/n60 pro"  (WSL 中访问 Windows 目录)
+   或
+   cd "n60 pro"  (Linux 中)
+
+2. 赋予执行权限：
+   chmod +x build.sh
+
+3. 执行编译：
+   ./build.sh
+
+4. 等待编译完成（首次编译需要 2-6 小时）
+
+五、编译产物
+-----------
+编译完成后，固件位于：
+immortalwrt-mt798x/bin/targets/mediatek/mt7981/
+
+主要文件：
+- immortalwrt-mediatek-mt7981-netcore_n60-pro-squashfs-sysupgrade.bin (升级用)
+- immortalwrt-mediatek-mt7981-netcore_n60-pro-squashfs-factory.bin (全新刷入)
+
+固件特性：
+✓ iStore 应用商店
+✓ QuickStart 快速入门向导
+✓ MT7981B 完整驱动支持
+✓ 中文优化界面
+
+六、刷入固件
+-----------
+方法 1: Web 升级（推荐）
+- 登录路由器管理界面
+- 系统 → 备份/升级
+- 上传 sysupgrade.bin 文件
+
+方法 2: Breed/Uboot
+- 进入 Breed/Uboot 界面
+- 上传 factory.bin 文件
+
+七、自定义配置
+-------------
+1. 修改软件包：编辑 diy-part2.sh
+2. 修改系统配置：编辑 diy-part2.sh 中的默认 IP、主机名等
+3. 修改编译选项：编辑 n60-pro.config
+
+八、常用命令
+-----------
+清理编译：./build.sh clean
+深度清理：./build.sh distclean
+更新源码：./build.sh update
+仅编译：./build.sh compile
+查看帮助：./build.sh help
+
+九、注意事项
+-----------
+1. 首次编译下载源码和依赖包需要较长时间
+2. 确保磁盘空间充足
+3. 编译过程中不要中断
+4. 如遇错误，查看日志排查问题
+
+十、技术支持
+-----------
+ImmortalWrt MT798x: https://github.com/padavanonly/immortalwrt-mt798x-6.6
+iStoreOS 官方: https://github.com/istoreos/istoreos
+OpenWrt 文档: https://openwrt.org/docs/start

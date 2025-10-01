@@ -1,0 +1,17 @@
+# 编译输出
+immortalwrt-mt798x/
+*.log
+build.log
+compile*.log
+build_output.log
+
+# 临时文件
+*.tmp
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
