@@ -1,3 +1,4 @@
+# N60 Pro ImmortalWrt 固件自动编译
 name: Build N60 Pro Firmware
 
 on:
@@ -128,7 +129,7 @@ jobs:
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: 上传固件到 Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
